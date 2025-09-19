@@ -1,0 +1,8 @@
+# Ignorar los directorios de caché de Python
+__pycache__/
+
+# Ignorar archivos .pyc
+*.pyc
+
+# Ignorar archivos de caché de pytest
+.pytest_cache/

@@ -1,5 +1,5 @@
 """
-Módulo que contiene la implementación de la interfaz de usuario del sistema de gestión de buses.
+Módulo que contiene la implementación de la interfaz de usuario simplificada.
 """
 from src.models.sistema_gestion_buses import SistemaGestionBuses
 
@@ -32,8 +32,8 @@ class InterfazUsuario:
         if opcion == "1":
             try:
                 capacidad = int(input("Ingrese la capacidad del bus: "))
-                if capacidad <= 0:
-                    print("Error: La capacidad debe ser un número positivo")
+                if capacidad <= 0 or capacidad >= 100:
+                    print("Error: La capacidad debe ser un número positivo y menor a 100")
                     return True
                 numero = self.sistema.agregar_bus(capacidad)
                 print(f"Bus creado con éxito. Número: {numero}")
@@ -53,16 +53,18 @@ class InterfazUsuario:
             bus = self.sistema.seleccionar_bus(numero)
             if bus:
                 self.bus_actual = bus
-                print(f"Bus {numero} seleccionado correctamente.")
+                print(f"✅ Bus {numero} seleccionado correctamente.")
+                print(f"🚌 Ahora trabajando con Bus #{numero}")
                 print(bus.obtener_estado())
             else:
-                print("Bus no encontrado")
+                print("❌ Bus no encontrado")
                 
         elif opcion == "3":
             if not self.bus_actual:
-                print("Primero debe seleccionar un bus")
+                print("⚠️  Primero debe seleccionar un bus")
                 return True
 
+            print(f"🚌 Vendiendo billetes para Bus #{self.bus_actual.numero}")
             nombre = input("Nombre del pasajero: ").strip()
             apellido = input("Apellido del pasajero: ").strip()
             
@@ -87,13 +89,14 @@ class InterfazUsuario:
 
         elif opcion == "4":
             if not self.bus_actual:
-                print("Primero debe seleccionar un bus")
+                print("⚠️  Primero debe seleccionar un bus")
                 return True
                 
             if not self.bus_actual.asientos:
-                print("No hay billetes vendidos para devolver")
+                print(f"ℹ️  Bus #{self.bus_actual.numero} no tiene billetes vendidos para devolver")
                 return True
                 
+            print(f"🚌 Gestionando devoluciones para Bus #{self.bus_actual.numero}")
             print("Asientos ocupados:")
             for numero in self.bus_actual.obtener_asientos_ocupados():
                 venta = self.bus_actual.asientos[numero]
@@ -114,15 +117,16 @@ class InterfazUsuario:
             
         elif opcion == "6":
             if not self.bus_actual:
-                print("Primero debe seleccionar un bus")
+                print("⚠️  Primero debe seleccionar un bus")
                 return True
             
             disponibles = self.bus_actual.obtener_asientos_disponibles()
             ocupados = self.bus_actual.obtener_asientos_ocupados()
             
-            print(f"\nBus número: {self.bus_actual.numero}")
-            print(f"Asientos disponibles: {disponibles}")
-            print(f"Asientos ocupados: {ocupados}")
+            print(f"\n🚌 Estado detallado del Bus #{self.bus_actual.numero}:")
+            print(f"📊 Capacidad total: {self.bus_actual.capacidad}")
+            print(f"✅ Asientos disponibles: {disponibles}")
+            print(f"🔴 Asientos ocupados: {ocupados}")
             
         elif opcion == "0":
             return False

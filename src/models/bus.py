@@ -51,7 +51,6 @@ class Bus:
         for _ in range(cantidad):
             numero_asiento = self._obtener_proximo_asiento_libre()
             if numero_asiento == -1:
-                # Deshacer asignaciones parciales si no hay suficientes asientos
                 for asiento in asientos_asignados:
                     del self.asientos[asiento]
                 return False
@@ -85,8 +84,6 @@ class Bus:
             str: Información sobre el estado del bus
         """
         disponibles = self.capacidad - len(self.asientos)
-        
-        # Ordenar asientos por número para una visualización más clara
         asientos_ordenados = sorted(self.asientos.items())
         
         detalle = "\n".join(
